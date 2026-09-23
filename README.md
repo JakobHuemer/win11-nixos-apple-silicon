@@ -3,6 +3,10 @@
 This flake recreates the windows 11 virtual machine guide from asahi linux:
 https://asahilinux.org/docs/sw/windows-11-vm/
 
+## TODO
+
+- [ ] Add cutom stuff from notes to documentation 
+
 ## Install
 
 Add the flake as input:
