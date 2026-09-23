@@ -8,24 +8,24 @@ https://asahilinux.org/docs/sw/windows-11-vm/
 Add the flake as input:
 
 ```nix
-  inputs = {
-    ...
+inputs = {
+  ...
 
-    win11-nixos-apple-silicon = {
-      url = "github:JakobHuemer/win11-nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+  win11-nixos-apple-silicon = {
+    url = "github:JakobHuemer/win11-nixos-apple-silicon";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
+};
 ```
 
 Import the module into your Home Manager config:
 
 ```nix
-outputs = { nixpkgs, home-manager, mytool, ... }: {
-  homeConfigurations.jdoe = home-manager.lib.homeManagerConfiguration {
+outputs = { nixpkgs, home-manager, ... } @ inputs: {
+  homeConfigurations.john = home-manager.lib.homeManagerConfiguration {
     pkgs = nixpkgs.legacyPackages.aarch64-linux;
     modules = [
-      win11-nixos-apple-silicon.homeModules.default
+      inputs.win11-nixos-apple-silicon.homeModules.default
       ./home.nix
     ];
   };
@@ -41,8 +41,21 @@ the virtio-drivers from
 
 ## Configure
 
+
 ```nix
 programs.win11-nixos-apple-silicon = {
   enable = true;
+
+  memory = 4096;
+
+  # once the vm is setup, those can be dropped.
+  virtio-iso-path = "<path to virtio drivers iso>";
+  win11-iso-path = "<path to windows 11 iso>";
+
+  # disk size for creating a disk when no disk is present.
+  # this will be ignored when there is already a disk.
+  diskSize = 1024 * 25; # 25GiB
 };
 ```
+
+

@@ -5,11 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = {
-    nixpkgs,
-    self,
-    ...
-  }: {
+  outputs = {...}: {
     homeModules.default = {
       pkgs,
       lib,
@@ -22,21 +18,24 @@
         memory = lib.mkOption {
           type = lib.types.ints.positive;
           default = 4096;
-          description = "Guest RAM in MiB";
+          description = "Guest RAM in MiB.";
         };
 
         virtio-iso-path = lib.mkOption {
           type = lib.types.nullOr lib.types.externalPath;
           default = null;
+          description = "The path to the virtio drivers iso.";
         };
         win11-iso-path = lib.mkOption {
           type = lib.types.nullOr lib.types.externalPath;
           default = null;
+          description = "The path to the Windows 11 iso.";
         };
         bios-fd-path = lib.mkOption {
           type = lib.types.path;
           default = "${pkgs.OVMF.fd}/FV/QEMU_EFI.fd";
           defaultText = lib.literalExpression ''"''${pkgs.OVMF.fd}/FV/QEMU_EFI.fd"'';
+          description = "The bios used for booting the vm.";
         };
 
         qemu-package = lib.mkPackageOption pkgs "qemu" {};
@@ -44,11 +43,12 @@
         diskImage = lib.mkOption {
           type = lib.types.nullOr lib.types.externalPath;
           default = null;
+          description = "qcow2 image for the vm.";
         };
         diskSize = lib.mkOption {
           type = lib.types.ints.positive;
-          default = 1024 * 20;
-          description = "Size of disk in MiB";
+          default = 1024 * 25;
+          description = "Size of disk in MiB for creation.";
         };
       };
 
